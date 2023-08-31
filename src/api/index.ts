@@ -7,6 +7,8 @@ import
   authenticate 
 from "@medusajs/medusa/dist/api/middlewares/authenticate" 
 import cors from "cors"
+import { ProductRepository } from "../repositories/product"
+import { StoreRepository } from "../repositories/store"
 
 export default function (rootDirectory: string) {
   const router = Router()
@@ -23,6 +25,21 @@ export default function (rootDirectory: string) {
     authenticate(),
     registerLoggedInUser
   )
+
+  
+  router.get("/stores/:store_id", async (req, res) => {
+    const store_id = req.params.store_id;
+    const productRepository: typeof ProductRepository = req.scope.resolve("productRepository")
+    const storeRepository: typeof StoreRepository = req.scope.resolve("storeRepository")
+    return res.json({
+      store: await storeRepository.findOne({
+        where: { id: store_id}
+      }),
+      products: await productRepository.find({
+        where: { store: { id: store_id } },
+      }),
+    })
+  })
 
   return router
 }
