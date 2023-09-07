@@ -41,5 +41,12 @@ export default function (rootDirectory: string) {
     })
   })
 
+  router.get("/stores", async (req, res) => {
+    const storeRepository: typeof StoreRepository = req.scope.resolve("storeRepository")
+    return res.json({
+      store: await storeRepository.find(),
+    })
+  })
+
   return router
 }

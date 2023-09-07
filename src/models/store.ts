@@ -1,4 +1,4 @@
-import { Entity, OneToMany } from "typeorm"
+import { Column, Entity, OneToMany } from "typeorm"
 import {
   Store as MedusaStore,
 } from "@medusajs/medusa"
@@ -13,4 +13,10 @@ export class Store extends MedusaStore {
 
   @OneToMany(() => Product, (product) => product?.store)
   products?: Product[];
+  
+  @Column({type: "decimal", precision: 9})
+  longitudes: number
+
+  @Column({type: "decimal", precision: 8})
+  latitudes: number
 }
