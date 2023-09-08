@@ -52,6 +52,45 @@ const plugins = [
       },
     },
   },
+  {
+	  resolve: `medusa-plugin-elasticsearch`,
+	  options: {
+		config: {
+		  node: process.env.ELASTIC_HOST
+		  //cloud: {
+		  //  id: process.env.ELASTIC_CLOUD_ID
+		  //},
+		  //auth: {
+		  //  username: process.env.ELASTIC_USER_NAME,
+		  //  password: process.env.ELASTIC_PASSWORD,
+		  //},
+		},
+		settings: {
+		  products: {
+			indexSettings: {
+			  searchableAttributes: ["title", "description"],
+			  attributesToRetrieve: [
+				"id",
+				"title",
+				"description",
+				"handle",
+				"thumbnail",
+				"variants",
+				"variant_sku",
+				"collection_handle",
+			  ],
+			},
+			transformer: (product) => ({
+			  id: product.id,
+			  title: product.title,
+			  handle: product.handle,
+			  description: product.description,
+			  thumbnail: product.thumbnail
+			}),
+		  },
+		},
+	  },
+	},
 ];
 
 const modules = {
